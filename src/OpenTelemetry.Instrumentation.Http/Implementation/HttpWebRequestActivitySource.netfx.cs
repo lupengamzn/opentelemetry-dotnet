@@ -127,6 +127,8 @@ namespace OpenTelemetry.Instrumentation.Http.Implementation
                     SpanHelper
                         .ResolveSpanStatusForHttpStatusCode((int)response.StatusCode)
                         .WithDescription(response.StatusDescription));
+
+                activity.SetTag(SemanticConventions.AttributeMessageUncompressedSize, response.ContentLength);
             }
         }
 

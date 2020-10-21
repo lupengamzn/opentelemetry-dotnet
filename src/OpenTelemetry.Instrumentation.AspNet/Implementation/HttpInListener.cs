@@ -132,6 +132,7 @@ namespace OpenTelemetry.Instrumentation.AspNet.Implementation
                 activity.SetTag(SpanAttributeConstants.HttpPathKey, path);
                 activity.SetTag(SemanticConventions.AttributeHttpUserAgent, request.UserAgent);
                 activity.SetTag(SemanticConventions.AttributeHttpUrl, request.Url.ToString());
+                activity.SetTag(SemanticConventions.AttributeHttpClientIP, request.UserHostAddress);
             }
         }
 

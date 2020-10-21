@@ -163,6 +163,12 @@ namespace OpenTelemetry.Instrumentation.Http.Implementation
                         SpanHelper
                             .ResolveSpanStatusForHttpStatusCode((int)response.StatusCode)
                             .WithDescription(response.ReasonPhrase));
+
+                    var contentLength = response.Content.Headers.ContentLength;
+                    if (response.Content.Headers.ContentLength != null)
+                    {
+                        activity.SetTag(SemanticConventions.AttributeMessageUncompressedSize, contentLength);
+                    }
                 }
             }
 

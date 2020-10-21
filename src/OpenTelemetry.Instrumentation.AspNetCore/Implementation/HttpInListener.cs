@@ -138,6 +138,7 @@ namespace OpenTelemetry.Instrumentation.AspNetCore.Implementation
                 activity.SetTag(SemanticConventions.AttributeHttpMethod, request.Method);
                 activity.SetTag(SpanAttributeConstants.HttpPathKey, path);
                 activity.SetTag(SemanticConventions.AttributeHttpUrl, GetUri(request));
+                activity.SetTag(SemanticConventions.AttributeHttpClientIP, request.HttpContext.Connection.RemoteIpAddress.ToString());
 
                 var userAgent = request.Headers["User-Agent"].FirstOrDefault();
                 if (!string.IsNullOrEmpty(userAgent))
@@ -170,6 +171,11 @@ namespace OpenTelemetry.Instrumentation.AspNetCore.Implementation
                 }
 
                 activity.SetTag(SemanticConventions.AttributeHttpStatusCode, response.StatusCode);
+
+                if (response.ContentLength != null)
+                {
+                    activity.SetTag(SemanticConventions.AttributeMessageUncompressedSize, response.ContentLength);
+                }
 
                 if (TryGetGrpcMethod(activity, out var grpcMethod))
                 {
